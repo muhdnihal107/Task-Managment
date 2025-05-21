@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}My Users' Tasks{% endblock %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-4">My Users' Tasks</h1>
+    <table class="w-full table-auto">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="px-4 py-2">Title</th>
+                <th class="px-4 py-2">Assigned To</th>
+                <th class="px-4 py-2">Due Date</th>
+                <th class="px-4 py-2">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td class="border px-4 py-2">{{ task.title }}</td>
+                <td class="border px-4 py-2">{{ task.assigned_to.username }}</td>
+                <td class="border px-4 py-2">{{ task.due_date }}</td>
+                <td class="border px-4 py-2">{{ task.status }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="border px-4 py-2 text-center">No tasks found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

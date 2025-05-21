@@ -1,0 +1,44 @@
+<!-- task_management/users/templates/admin_panel/manage_assigned_users.html -->
+{% extends 'base.html' %}
+{% block title %}Manage Assigned Users{% endblock %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-4">Manage Assigned Users</h1>
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <p class="text-green-600">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <table class="w-full table-auto">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="px-4 py-2">Username</th>
+                <th class="px-4 py-2">Email</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in assigned_users %}
+            <tr>
+                <td class="border px-4 py-2">{{ user.username }}</td>
+                <td class="border px-4 py-2">{{ user.email }}</td>
+                <td class="border px-4 py-2">
+                    <a href="{% url 'user_details' user.id %}" class="text-blue-600 hover:underline">Details</a> |
+                    <a href="{% url 'edit_assigned_user' user.id %}" class="text-blue-600 hover:underline">Edit</a> |
+                    <form method="post" action="{% url 'delete_assigned_user' user.id %}" class="inline" onsubmit="return confirm('Are you sure you want to delete {{ user.username }}?');">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="border px-4 py-2 text-center">No assigned users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

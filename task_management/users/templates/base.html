@@ -1,0 +1,67 @@
+<!-- task_management/users/templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #4a5568;
+        }
+        .content-area {
+            transition: margin-left 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .content-area {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    {% if user.is_authenticated and user.is_staff or user.is_superuser %}
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+        <div class="sidebar fixed top-0 left-0 w-64 bg-gray-800 text-white h-full">
+            <div class="p-4 text-2xl font-bold">Admin Panel</div>
+            <nav class="mt-4">
+                <a href="{% url 'admin_dashboard' %}" class="block py-2 px-4 hover:bg-gray-700">Dashboard</a>
+                {% if user.is_superuser %}
+                <a href="{% url 'manage_users' %}" class="block py-2 px-4 hover:bg-gray-700">Manage Users</a>
+                <a href="{% url 'manage_admins' %}" class="block py-2 px-4 hover:bg-gray-700">Manage Admins</a>
+                <a href="{% url 'manage_all_tasks' %}" class="block py-2 px-4 hover:bg-gray-700">All Tasks</a>
+                <a href="{% url 'assign_task_superadmin' %}" class="block py-2 px-4 hover:bg-gray-700">Assign Task</a>
+                {% else %}
+                <a href="{% url 'manage_assigned_users' %}" class="block py-2 px-4 hover:bg-gray-700">Manage Assigned Users</a>
+                <a href="{% url 'assign_users' %}" class="block py-2 px-4 hover:bg-gray-700">Assign Users</a>
+                <a href="{% url 'admin_tasks' %}" class="block py-2 px-4 hover:bg-gray-700">My Users' Tasks</a>
+                <a href="{% url 'assign_task' %}" class="block py-2 px-4 hover:bg-gray-700">Assign Task</a>
+                {% endif %}
+                <a href="{% url 'admin_logout' %}" class="block py-2 px-4 hover:bg-gray-700">Logout</a>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div class="content-area flex-1 ml-64 p-6">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    {% else %}
+    <div class="flex items-center justify-center min-h-screen">
+        {% block login_content %}
+        {% endblock %}
+    </div>
+    {% endif %}
+</body>
+</html>

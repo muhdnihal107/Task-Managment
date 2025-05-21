@@ -1,0 +1,27 @@
+<!-- task_management/users/templates/users/login.html -->
+{% extends 'base.html' %}
+{% block title %}Admin Login{% endblock %}
+{% block login_content %}
+<div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-4">Admin Login</h1>
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <p class="text-red-600">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="username" class="block text-gray-700">Username</label>
+            <input type="text" name="username" id="username" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+            <label for="password" class="block text-gray-700">Password</label>
+            <input type="password" name="password" id="password" class="w-full p-2 border rounded" required>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Login</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!-- task_management/users/templates/admin_panel/assign_task_superadmin.html -->
+{% extends 'base.html' %}
+{% block title %}Assign Task (SuperAdmin){% endblock %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-4">Assign Task</h1>
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <p class="text-green-600">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form method="post" action="{% url 'assign_task_superadmin' %}">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="title" class="block text-gray-700">Title</label>
+            <input type="text" name="title" id="title" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+            <label for="description" class="block text-gray-700">Description</label>
+            <textarea name="description" id="description" class="w-full p-2 border rounded" required></textarea>
+        </div>
+        <div class="mb-4">
+            <label for="due_date" class="block text-gray-700">Due Date</label>
+            <input type="date" name="due_date" id="due_date" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+            <label for="assigned_to" class="block text-gray-700">Assign To</label>
+            <select name="assigned_to" id="assigned_to" class="w-full p-2 border rounded" required>
+                {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Assign Task</button>
+    </form>
+</div>
+{% endblock %}

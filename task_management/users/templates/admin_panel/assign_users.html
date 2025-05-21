@@ -1,0 +1,31 @@
+<!-- task_management/users/templates/admin_panel/assign_users.html -->
+{% extends 'base.html' %}
+{% block title %}Assign Users{% endblock %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-4">Assign Users</h1>
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <p class="text-green-600">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="block text-gray-700">Select Users</label>
+            {% for user in available_users %}
+            <div class="flex items-center mb-2">
+                <input type="checkbox" name="users" value="{{ user.id }}" class="mr-2">
+                <span>{{ user.username }} ({{ user.email }})</span>
+            </div>
+            {% empty %}
+            <p>No users available to assign.</p>
+            {% endfor %}
+        </div>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Assign Users</button>
+        <a href="{% url 'manage_assigned_users' %}" class="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700">Cancel</a>
+    </form>
+</div>
+{% endblock %}

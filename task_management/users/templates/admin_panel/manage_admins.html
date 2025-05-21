@@ -1,0 +1,44 @@
+<!-- task_management/users/templates/admin_panel/manage_admins.html -->
+{% extends 'base.html' %}
+{% block title %}Manage Admins{% endblock %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-4">Manage Admins</h1>
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <p class="text-green-600">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <table class="w-full table-auto">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="px-4 py-2">Username</th>
+                <th class="px-4 py-2">Email</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for admin in admins %}
+            <tr>
+                <td class="border px-4 py-2">{{ admin.username }}</td>
+                <td class="border px-4 py-2">{{ admin.email }}</td>
+                <td class="border px-4 py-2">
+                    <a href="{% url 'edit_admin' admin.id %}" class="text-blue-600 hover:underline">Edit</a> |
+                    <form method="post" action="{% url 'delete_admin' admin.id %}" class="inline" onsubmit="return confirm('Are you sure you want to delete {{ admin.username }}?');">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                    </form> |
+                    <a href="{% url 'demote_to_user' admin.id %}" class="text-red-600 hover:underline">Demote to User</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="border px-4 py-2 text-center">No admins found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
